@@ -23,7 +23,7 @@ func (c *SplunkAcsClient) UpdateHecToken(hecUpdateRequest HttpEventCollectorUpda
 		return nil, nil, err
 	}
 
-	req, err := http.NewRequest(http.MethodPatch, fmt.Sprintf("%s/adminconfig/v2/inputs/http-event-collectors", c.Url), strings.NewReader(string(rb)))
+	req, err := http.NewRequest(http.MethodPut, fmt.Sprintf("%s/adminconfig/v2/inputs/http-event-collectors", c.Url), strings.NewReader(string(rb)))
 	if err != nil {
 		return nil, nil, err
 	}
