@@ -1,7 +1,7 @@
 package splunkacs
 
 import (
-	"io/ioutil"
+	"io"
 	"net/http"
 )
 
@@ -33,7 +33,7 @@ func (c *SplunkAcsClient) doRequest(req *http.Request) ([]byte, *http.Response, 
 	}
 	defer res.Body.Close()
 
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, res, err
 	}

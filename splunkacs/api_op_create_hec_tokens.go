@@ -44,7 +44,7 @@ func (c *SplunkAcsClient) CreateHecToken(hecCreateRequest HttpEventCollectorCrea
 	}
 
 	if res.StatusCode != http.StatusAccepted {
-		return nil, res, fmt.Errorf("Unexpected response while creating HEC Token. status: %d, body: %s", res.StatusCode, body)
+		return nil, res, fmt.Errorf("unexpected response while creating HEC Token. status: %d, body: %s", res.StatusCode, body)
 	}
 
 	result := HttpEventCollectorCreateResponse{}
