@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [1.1.1](https://github.com/atanaspam/splunkacs-api-go/compare/v1.1.0...v1.1.1) (2022-11-21)
+
+
+### Bug Fixes
+
+* bad URL for HEC update operations ([#3](https://github.com/atanaspam/splunkacs-api-go/issues/3)) ([1d13312](https://github.com/atanaspam/splunkacs-api-go/commit/1d13312423765941c66e7abfce078f0f14376929))
+
 ## [1.1.0](https://github.com/atanaspam/splunkacs-api-go/compare/v1.0.0...v1.1.0) (2022-11-20)
 
 
