@@ -25,7 +25,7 @@ func (c *SplunkAcsClient) ListHecTokens() (*HttpEventCollectorListResponse, *htt
 	}
 
 	if res.StatusCode != http.StatusOK {
-		return nil, res, fmt.Errorf("Unexpected response while listing HEC Tokens. status: %d, body: %s", res.StatusCode, body)
+		return nil, res, fmt.Errorf("unexpected response while listing HEC Tokens. status: %d, body: %s", res.StatusCode, body)
 	}
 
 	result := HttpEventCollectorListResponse{}

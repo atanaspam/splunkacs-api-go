@@ -27,7 +27,7 @@ func (c *SplunkAcsClient) GetIndex(indexName string) (*IndexGetResponse, *http.R
 	}
 
 	if res.StatusCode != http.StatusOK {
-		return nil, res, fmt.Errorf("Unexpected response while getting index. status: %d, body: %s", res.StatusCode, body)
+		return nil, res, fmt.Errorf("unexpected response while getting index. status: %d, body: %s", res.StatusCode, body)
 	}
 
 	result := IndexGetResponse{}

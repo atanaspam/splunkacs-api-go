@@ -30,7 +30,7 @@ func (c *SplunkAcsClient) ListIndexes() (*IndexListResponse, *http.Response, err
 	}
 
 	if res.StatusCode != http.StatusOK {
-		return nil, res, fmt.Errorf("Unexpected response while listing indexes. status: %d, body: %s", res.StatusCode, body)
+		return nil, res, fmt.Errorf("unexpected response while listing indexes. status: %d, body: %s", res.StatusCode, body)
 	}
 
 	result := IndexListResponse{}

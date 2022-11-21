@@ -17,13 +17,13 @@ type HttpEventCollectorUpdateResponse struct {
 	Code string `json:"code"`
 }
 
-func (c *SplunkAcsClient) UpdateHecToken(hecUpdateRequest HttpEventCollectorUpdateRequest) (*HttpEventCollectorUpdateResponse, *http.Response, error) {
+func (c *SplunkAcsClient) UpdateHecToken(hecName string, hecUpdateRequest HttpEventCollectorUpdateRequest) (*HttpEventCollectorUpdateResponse, *http.Response, error) {
 	rb, err := json.Marshal(hecUpdateRequest)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	req, err := http.NewRequest(http.MethodPut, fmt.Sprintf("%s/adminconfig/v2/inputs/http-event-collectors", c.Url), strings.NewReader(string(rb)))
+	req, err := http.NewRequest(http.MethodPut, fmt.Sprintf("%s/adminconfig/v2/inputs/http-event-collectors/%s", c.Url, hecName), strings.NewReader(string(rb)))
 	if err != nil {
 		return nil, nil, err
 	}
@@ -34,7 +34,7 @@ func (c *SplunkAcsClient) UpdateHecToken(hecUpdateRequest HttpEventCollectorUpda
 	}
 
 	if res.StatusCode != http.StatusOK {
-		return nil, res, fmt.Errorf("Unexpected response while updating HEC. status: %d, body: %s", res.StatusCode, body)
+		return nil, res, fmt.Errorf("unexpected response while updating HEC. status: %d, body: %s", res.StatusCode, body)
 	}
 
 	result := HttpEventCollectorUpdateResponse{}

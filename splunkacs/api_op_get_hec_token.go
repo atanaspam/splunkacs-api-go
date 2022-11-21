@@ -27,7 +27,7 @@ func (c *SplunkAcsClient) GetHecToken(hecName string) (*HttpEventCollectorGetRes
 	}
 
 	if res.StatusCode != http.StatusOK {
-		return nil, res, fmt.Errorf("Unexpected response while getting HEC Token. status: %d, body: %s", res.StatusCode, body)
+		return nil, res, fmt.Errorf("unexpected response while getting HEC Token. status: %d, body: %s", res.StatusCode, body)
 	}
 
 	result := HttpEventCollectorGetResponse{}
