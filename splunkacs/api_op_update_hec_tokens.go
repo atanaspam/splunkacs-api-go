@@ -3,6 +3,7 @@ package splunkacs
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -13,6 +14,8 @@ type HttpEventCollectorUpdateRequest struct {
 }
 
 // The result of updating an individual HEC Token
+// Splunk Docs and Splunk API response seem to differ. The struct below represents whats in the docs
+// but is actually not correct.
 type HttpEventCollectorUpdateResponse struct {
 	Code string `json:"code"`
 }
@@ -33,13 +36,14 @@ func (c *SplunkAcsClient) UpdateHecToken(hecName string, hecUpdateRequest HttpEv
 		return nil, res, err
 	}
 
-	if res.StatusCode != http.StatusOK {
-		return nil, res, fmt.Errorf("unexpected response while updating HEC. status: %d, body: %s", res.StatusCode, body)
+	if res.StatusCode != http.StatusAccepted {
+		return nil, res, fmt.Errorf("unexpected response while updating HEC token. status: %d, body: %s", res.StatusCode, body)
 	}
 
 	result := HttpEventCollectorUpdateResponse{}
 	err = json.Unmarshal(body, &result)
 	if err != nil {
+		log.Printf("failed to unmarshal response body: %s", string(body))
 		return nil, res, err
 	}
 
