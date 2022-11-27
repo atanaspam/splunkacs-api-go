@@ -21,6 +21,7 @@ func main() {
 	// getHecs(*acsClient)
 	// getHec(*acsClient, "atanas-test")
 	// createHec(*acsClient, "atanas-test")
+	// updateHec(*acsClient, "atanas-test")
 	// deleteHec(*acsClient, "atanas-test")
 	// listIndexes(*acsClient)
 	// getIndex(*acsClient, "atanas-test")
@@ -63,6 +64,7 @@ func createHec(acsClient splunkacs.SplunkAcsClient, tokenName string) {
 	hecCreateRequest.DefaultSourcetype = ""
 	hecCreateRequest.Disabled = disabled
 	hecCreateRequest.Name = tokenName
+	hecCreateRequest.UseACK = false
 
 	hecCreateResp, res, err := acsClient.CreateHecToken(*hecCreateRequest)
 	if err != nil {
@@ -71,6 +73,28 @@ func createHec(acsClient splunkacs.SplunkAcsClient, tokenName string) {
 	}
 
 	fmt.Printf("result: '%v'\n", hecCreateResp.CreateResponseItem)
+}
+
+func updateHec(acsClient splunkacs.SplunkAcsClient, tokenName string) {
+	defaultIndex := "main"
+	disabled := false
+	hecUpdateRequest := new(splunkacs.HttpEventCollectorUpdateRequest)
+	hecUpdateRequest.AllowedIndexes = []string{"main"}
+	hecUpdateRequest.DefaultHost = ""
+	hecUpdateRequest.DefaultIndex = defaultIndex
+	hecUpdateRequest.DefaultSource = "test1"
+	hecUpdateRequest.DefaultSourcetype = ""
+	hecUpdateRequest.Disabled = disabled
+	hecUpdateRequest.Name = tokenName
+	hecUpdateRequest.UseACK = true
+
+	hecUpdateResp, res, err := acsClient.UpdateHecToken(tokenName, *hecUpdateRequest)
+	if err != nil {
+		fmt.Printf("%v\n", res)
+		log.Fatal(err)
+	}
+
+	fmt.Printf("result: '%s'\n", hecUpdateResp)
 }
 
 func deleteHec(acsClient splunkacs.SplunkAcsClient, tokenName string) {

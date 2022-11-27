@@ -13,7 +13,7 @@ type HecTokenSpec struct {
 	DefaultSource     string   `json:"defaultSource,omitempty"`
 	DefaultSourcetype string   `json:"defaultSourcetype,omitempty"`
 	Disabled          bool     `json:"disabled,omitempty"`
-	Name              string   `json:"name,,omitempty"`
+	Name              string   `json:"name,omitempty"`
 	UseACK            bool     `json:"useACK,omitempty"`
 }
 
