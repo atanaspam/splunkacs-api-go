@@ -7,17 +7,10 @@ import (
 )
 
 // The result of listing multiple indexes
-type IndexListResponse []struct {
-	Name            *string `json:"name"`
-	DataType        *string `json:"datatype"`
-	SearchableDays  *int    `json:"searchableDays"`
-	MaxDataSizeMb   *int    `json:"maxDataSizeMB"`
-	TotalEventCount *string `json:"totalEventCount"`
-	TotalRawSizeMb  *string `json:"totalRawSizeMB"`
-}
+type IndexListResponse []Index
 
 // Lists all Indexes
-// TODO check if count=0 is sufficent or we need to use pagination to go beyond 100 results
+// TODO introduce pagination
 func (c *SplunkAcsClient) ListIndexes() (*IndexListResponse, *http.Response, error) {
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/adminconfig/v2/indexes?count=0", c.Url), nil)
 	if err != nil {

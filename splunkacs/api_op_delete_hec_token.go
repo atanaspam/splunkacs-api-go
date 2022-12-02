@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// Thehe result of Deleting a HEC Token
+// The result of deleting a HEC Token
 type HttpEventCollectorDeleteResponse struct {
 	Body string
 }
