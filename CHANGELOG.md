@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0](https://github.com/atanaspam/splunkacs-api-go/compare/v1.1.2...v1.2.0) (2022-12-02)
+
+
+### Features
+
+* adding support for operations on indexes ([#5](https://github.com/atanaspam/splunkacs-api-go/issues/5)) ([fb61654](https://github.com/atanaspam/splunkacs-api-go/commit/fb61654cfb0e4397b5641b0acca8df3e8bb9fa43))
+
 ### [1.1.2](https://github.com/atanaspam/splunkacs-api-go/compare/v1.1.1...v1.1.2) (2022-11-27)
 
 
