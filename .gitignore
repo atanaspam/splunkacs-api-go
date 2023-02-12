@@ -16,3 +16,4 @@
 
 .DS_Store
 examples/main.go
+examples/load_test/
