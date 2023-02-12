@@ -46,6 +46,10 @@ type StackStatusMessages struct {
 	RestartRequired bool `json:"restartRequired,omitempty"`
 }
 
+type IPWhiteList struct {
+	Subnets []string `json:"subnets,omitempty"`
+}
+
 type SplunkACSRequest struct {
 	HttpRequest *http.Request
 	RetryLimit  int
