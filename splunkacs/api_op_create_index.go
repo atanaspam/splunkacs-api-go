@@ -20,7 +20,7 @@ type IndexCreateResponse struct {
 	Index
 }
 
-func (c *SplunkAcsClient) CreateIndex(indexRequest IndexCreateRequest) (*IndexCreateResponse, *http.Response, error) {
+func (c *SplunkAcsClient) CreateIndex(indexRequest IndexCreateRequest) (*IndexCreateResponse, *SplunkACSResponse, error) {
 	reqBody, err := json.Marshal(indexRequest)
 	if err != nil {
 		return nil, nil, err
@@ -31,20 +31,20 @@ func (c *SplunkAcsClient) CreateIndex(indexRequest IndexCreateRequest) (*IndexCr
 		return nil, nil, err
 	}
 
-	apiRes, err := c.doRequest(NewSplunkApiRequest(httpReq))
+	apiRes, err := c.doRequest(NewSplunkACSRequest(httpReq))
 	if err != nil {
-		return nil, apiRes.HttpResponse, err
+		return nil, apiRes, err
 	}
 
 	if apiRes.StatusCode != http.StatusAccepted {
-		return nil, apiRes.HttpResponse, fmt.Errorf("unexpected response while creating index. status: %d, body: %s", apiRes.StatusCode, apiRes.Body)
+		return nil, apiRes, fmt.Errorf("unexpected response while creating index. status: %d, body: %s", apiRes.StatusCode, apiRes.Body)
 	}
 
 	result := IndexCreateResponse{}
 	err = json.Unmarshal(apiRes.Body, &result)
 	if err != nil {
-		return &result, apiRes.HttpResponse, err
+		return &result, apiRes, err
 	}
 
-	return &result, apiRes.HttpResponse, nil
+	return &result, apiRes, nil
 }

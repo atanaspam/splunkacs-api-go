@@ -18,9 +18,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	getIndexResp, res, err := acsClient.GetIndex(*IndexNameFlag)
+	getIndexResp, apiRes, err := acsClient.GetIndex(*IndexNameFlag)
 	if err != nil {
-		fmt.Printf("encountered unexpected error. Response code: %d\n", res.StatusCode)
+		fmt.Printf("encountered unexpected error. Response code: %d\n", apiRes.StatusCode)
 		log.Fatal(err)
 	}
 	fmt.Printf("name: '%s' totalEventCount: '%s'\n", getIndexResp.Name, getIndexResp.TotalEventCount)
