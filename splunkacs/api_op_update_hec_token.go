@@ -21,31 +21,31 @@ type HttpEventCollectorUpdateResponse struct {
 }
 
 func (c *SplunkAcsClient) UpdateHecToken(hecName string, hecUpdateRequest HttpEventCollectorUpdateRequest) (*HttpEventCollectorUpdateResponse, *http.Response, error) {
-	rb, err := json.Marshal(hecUpdateRequest)
+	reqBody, err := json.Marshal(hecUpdateRequest)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	req, err := http.NewRequest(http.MethodPut, fmt.Sprintf("%s/adminconfig/v2/inputs/http-event-collectors/%s", c.Url, hecName), strings.NewReader(string(rb)))
+	httpReq, err := http.NewRequest(http.MethodPut, fmt.Sprintf("%s/adminconfig/v2/inputs/http-event-collectors/%s", c.Url, hecName), strings.NewReader(string(reqBody)))
 	if err != nil {
 		return nil, nil, err
 	}
 
-	body, res, err := c.doRequest(req)
+	apiRes, err := c.doRequest(NewSplunkApiRequest(httpReq))
 	if err != nil {
-		return nil, res, err
+		return nil, apiRes.HttpResponse, err
 	}
 
-	if res.StatusCode != http.StatusAccepted {
-		return nil, res, fmt.Errorf("unexpected response while updating HEC token. status: %d, body: %s", res.StatusCode, body)
+	if apiRes.StatusCode != http.StatusAccepted {
+		return nil, apiRes.HttpResponse, fmt.Errorf("unexpected response while updating HEC token. status: %d, body: %s", apiRes.StatusCode, apiRes.Body)
 	}
 
 	result := HttpEventCollectorUpdateResponse{}
-	err = json.Unmarshal(body, &result)
+	err = json.Unmarshal(apiRes.Body, &result)
 	if err != nil {
-		log.Printf("failed to unmarshal response body: %s", string(body))
-		return nil, res, err
+		log.Printf("failed to unmarshal response body: %s", string(apiRes.Body))
+		return nil, apiRes.HttpResponse, err
 	}
 
-	return &result, res, nil
+	return &result, apiRes.HttpResponse, nil
 }

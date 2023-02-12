@@ -13,26 +13,26 @@ type IndexDeleteResponse struct {
 }
 
 func (c *SplunkAcsClient) DeleteIndex(indexName string) (*IndexDeleteResponse, *http.Response, error) {
-	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("%s/adminconfig/v2/indexes/%s", c.Url, indexName), nil)
+	httpReq, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("%s/adminconfig/v2/indexes/%s", c.Url, indexName), nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	body, res, err := c.doRequest(req)
+	apiRes, err := c.doRequest(NewSplunkApiRequest(httpReq))
 	if err != nil {
-		return nil, res, err
+		return nil, apiRes.HttpResponse, err
 	}
 
-	if res.StatusCode == http.StatusNotFound {
-		return nil, res, fmt.Errorf("index not found. body: '%s'", body)
+	if apiRes.StatusCode == http.StatusNotFound {
+		return nil, apiRes.HttpResponse, fmt.Errorf("index not found. body: '%s'", apiRes.Body)
 	}
 
-	if res.StatusCode != http.StatusAccepted {
-		return nil, res, fmt.Errorf("unexpected response while deleting index. status: %d, body: %s", res.StatusCode, body)
+	if apiRes.StatusCode != http.StatusAccepted {
+		return nil, apiRes.HttpResponse, fmt.Errorf("unexpected response while deleting index. status: %d, body: %s", apiRes.StatusCode, apiRes.Body)
 	}
 
 	result := IndexDeleteResponse{}
-	result.Body = string(body)
+	result.Body = string(apiRes.Body)
 
-	return &result, res, nil
+	return &result, apiRes.HttpResponse, nil
 }

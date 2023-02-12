@@ -20,32 +20,31 @@ type IndexUpdateResponse struct {
 }
 
 func (c *SplunkAcsClient) UpdateIndex(indexName string, indexUpdateRequest IndexUpdateRequest) (*IndexUpdateResponse, *http.Response, error) {
-	rb, err := json.Marshal(indexUpdateRequest)
+	reqBody, err := json.Marshal(indexUpdateRequest)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	req, err := http.NewRequest(http.MethodPatch, fmt.Sprintf("%s/adminconfig/v2/indexes/%s", c.Url, indexName), strings.NewReader(string(rb)))
+	httpReq, err := http.NewRequest(http.MethodPatch, fmt.Sprintf("%s/adminconfig/v2/indexes/%s", c.Url, indexName), strings.NewReader(string(reqBody)))
 	if err != nil {
 		return nil, nil, err
 	}
 
-	body, res, err := c.doRequest(req)
+	apiRes, err := c.doRequest(NewSplunkApiRequest(httpReq))
 	if err != nil {
-		return nil, res, err
+		return nil, apiRes.HttpResponse, err
 	}
 
-	fmt.Println(res.StatusCode)
-	if res.StatusCode != http.StatusAccepted {
-		return nil, res, fmt.Errorf("unexpected response while updating index. status: %d, body: %s", res.StatusCode, body)
+	if apiRes.StatusCode != http.StatusAccepted {
+		return nil, apiRes.HttpResponse, fmt.Errorf("unexpected response while updating index. status: %d, body: %s", apiRes.StatusCode, apiRes.Body)
 	}
 
 	result := IndexUpdateResponse{}
-	err = json.Unmarshal(body, &result)
+	err = json.Unmarshal(apiRes.Body, &result)
 	if err != nil {
-		log.Printf("failed to unmarshal response body: %s", string(body))
-		return nil, res, err
+		log.Printf("failed to unmarshal response body: %s", string(apiRes.Body))
+		return nil, apiRes.HttpResponse, err
 	}
 
-	return &result, res, nil
+	return &result, apiRes.HttpResponse, nil
 }
