@@ -25,9 +25,9 @@ func main() {
 		MaxDataSizeMb:  0,
 	}
 
-	indexCreateResp, res, err := acsClient.CreateIndex(indexCreateRequest)
+	indexCreateResp, apiRes, err := acsClient.CreateIndex(indexCreateRequest)
 	if err != nil {
-		fmt.Printf("encountered unexpected error. Response code: %d\n", res.StatusCode)
+		fmt.Printf("encountered unexpected error. Response code: %d\n", apiRes.StatusCode)
 		log.Fatal(err)
 	}
 	fmt.Printf("name: '%s' totalEventCount: '%s'\n", indexCreateResp.Name, indexCreateResp.TotalEventCount)
