@@ -12,25 +12,25 @@ type IndexListResponse []Index
 // Lists all Indexes
 // TODO introduce pagination
 func (c *SplunkAcsClient) ListIndexes() (*IndexListResponse, *http.Response, error) {
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/adminconfig/v2/indexes?count=0", c.Url), nil)
+	httpReq, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/adminconfig/v2/indexes?count=0", c.Url), nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	body, res, err := c.doRequest(req)
+	res, err := c.doRequest(NewSplunkApiRequest(httpReq))
 	if err != nil {
-		return nil, res, err
+		return nil, res.HttpResponse, err
 	}
 
-	if res.StatusCode != http.StatusOK {
-		return nil, res, fmt.Errorf("unexpected response while listing indexes. status: %d, body: %s", res.StatusCode, body)
+	if res.HttpResponse.StatusCode != http.StatusOK {
+		return nil, res.HttpResponse, fmt.Errorf("unexpected response while listing indexes. status: %d, body: %s", res.HttpResponse.StatusCode, res.Body)
 	}
 
 	result := IndexListResponse{}
-	err = json.Unmarshal(body, &result)
+	err = json.Unmarshal(res.Body, &result)
 	if err != nil {
-		return nil, res, err
+		return nil, res.HttpResponse, err
 	}
 
-	return &result, res, nil
+	return &result, res.HttpResponse, nil
 }

@@ -11,26 +11,26 @@ type HttpEventCollectorDeleteResponse struct {
 }
 
 func (c *SplunkAcsClient) DeleteHecToken(hecName string) (*HttpEventCollectorDeleteResponse, *http.Response, error) {
-	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("%s/adminconfig/v2/inputs/http-event-collectors/%s", c.Url, hecName), nil)
+	httpReq, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("%s/adminconfig/v2/inputs/http-event-collectors/%s", c.Url, hecName), nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	body, res, err := c.doRequest(req)
+	res, err := c.doRequest(NewSplunkApiRequest(httpReq))
 	if err != nil {
-		return nil, res, err
+		return nil, res.HttpResponse, err
 	}
 
-	if res.StatusCode == http.StatusNotFound {
-		return nil, res, fmt.Errorf("HEC not found. body: '%s'", body)
+	if res.HttpResponse.StatusCode == http.StatusNotFound {
+		return nil, res.HttpResponse, fmt.Errorf("HEC not found. body: '%s'", res.Body)
 	}
 
-	if res.StatusCode != http.StatusAccepted {
-		return nil, res, fmt.Errorf("unexpected response while deleting HEC Token. status: %d, body: %s", res.StatusCode, body)
+	if res.HttpResponse.StatusCode != http.StatusAccepted {
+		return nil, res.HttpResponse, fmt.Errorf("unexpected response while deleting HEC Token. status: %d, body: %s", res.HttpResponse.StatusCode, res.Body)
 	}
 
 	result := HttpEventCollectorDeleteResponse{}
-	result.Body = string(body)
+	result.Body = string(res.Body)
 
-	return &result, res, nil
+	return &result, res.HttpResponse, nil
 }

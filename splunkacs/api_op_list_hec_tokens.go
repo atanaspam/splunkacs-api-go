@@ -14,25 +14,25 @@ type HttpEventCollectorListResponse struct {
 // Lists all HECs
 // TODO check if count=0 is sufficent or we need to use pagination to go beyond 100 results
 func (c *SplunkAcsClient) ListHecTokens() (*HttpEventCollectorListResponse, *http.Response, error) {
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/adminconfig/v2/inputs/http-event-collectors?count=0", c.Url), nil)
+	httpReq, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/adminconfig/v2/inputs/http-event-collectors?count=0", c.Url), nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	body, res, err := c.doRequest(req)
+	res, err := c.doRequest(NewSplunkApiRequest(httpReq))
 	if err != nil {
-		return nil, res, err
+		return nil, res.HttpResponse, err
 	}
 
-	if res.StatusCode != http.StatusOK {
-		return nil, res, fmt.Errorf("unexpected response while listing HEC Tokens. status: %d, body: %s", res.StatusCode, body)
+	if res.HttpResponse.StatusCode != http.StatusOK {
+		return nil, res.HttpResponse, fmt.Errorf("unexpected response while listing HEC Tokens. status: %d, body: %s", res.HttpResponse.StatusCode, res.Body)
 	}
 
 	result := HttpEventCollectorListResponse{}
-	err = json.Unmarshal(body, &result)
+	err = json.Unmarshal(res.Body, &result)
 	if err != nil {
-		return nil, res, err
+		return nil, res.HttpResponse, err
 	}
 
-	return &result, res, nil
+	return &result, res.HttpResponse, nil
 }
