@@ -18,9 +18,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	listIndexResp, res, err := acsClient.ListIndexes()
+	listIndexResp, apiRes, err := acsClient.ListIndexes()
 	if err != nil {
-		fmt.Printf("encountered unexpected error. Response code: %d\n", res.StatusCode)
+		fmt.Printf("encountered unexpected error. Response code: %d\n", apiRes.StatusCode)
 		log.Fatal(err)
 	}
 	for _, index := range *listIndexResp {

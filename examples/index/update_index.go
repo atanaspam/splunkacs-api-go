@@ -23,9 +23,9 @@ func main() {
 		MaxDataSizeMb:  0,
 	}
 
-	getIndexResp, res, err := acsClient.UpdateIndex(*IndexNameFlag, indexUpdateRequest)
+	getIndexResp, apiRes, err := acsClient.UpdateIndex(*IndexNameFlag, indexUpdateRequest)
 	if err != nil {
-		fmt.Printf("encountered unexpected error. Response code: %d\n", res.StatusCode)
+		fmt.Printf("encountered unexpected error. Response code: %d\n", apiRes.StatusCode)
 		log.Fatal(err)
 	}
 	fmt.Printf("name: '%s' totalEventCount: '%s, searchableDays: '%s'\n", getIndexResp.Name, getIndexResp.TotalEventCount, getIndexResp.SearchableDays)

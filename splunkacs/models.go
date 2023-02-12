@@ -31,34 +31,34 @@ type Index struct {
 	TotalRawSizeMb  string `json:"totalRawSizeMB,omitempty"`
 }
 
-type SplunkApiRequest struct {
+type SplunkACSRequest struct {
 	HttpRequest *http.Request
 	RetryLimit  int
 }
 
-func NewSplunkApiRequest(httpRequest *http.Request) *SplunkApiRequest {
-	return &SplunkApiRequest{
+func NewSplunkACSRequest(httpRequest *http.Request) *SplunkACSRequest {
+	return &SplunkACSRequest{
 		HttpRequest: httpRequest,
 		RetryLimit:  4, // Arbitrary magic value
 	}
 }
 
-type SplunkApiResponse struct {
+type SplunkACSResponse struct {
 	HttpResponse *http.Response
 	Body         []byte
 	StatusCode   int
 }
 
-func NewSplunkApiResponse(httpResponse *http.Response) (*SplunkApiResponse, error) {
+func NewSplunkACSResponse(httpResponse *http.Response) (*SplunkACSResponse, error) {
 	defer httpResponse.Body.Close()
 	body, err := io.ReadAll(httpResponse.Body)
 	if err != nil {
-		return &SplunkApiResponse{
+		return &SplunkACSResponse{
 			HttpResponse: httpResponse,
 		}, nil
 	}
 
-	return &SplunkApiResponse{
+	return &SplunkACSResponse{
 		HttpResponse: httpResponse,
 		Body:         body,
 		StatusCode:   httpResponse.StatusCode,

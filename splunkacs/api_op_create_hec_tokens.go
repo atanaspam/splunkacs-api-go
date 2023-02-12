@@ -27,7 +27,7 @@ type HttpEventCollectorCreateResponseSpec struct {
 	Name string `json:"name"`
 }
 
-func (c *SplunkAcsClient) CreateHecToken(hecCreateRequest HttpEventCollectorCreateRequest) (*HttpEventCollectorCreateResponse, *http.Response, error) {
+func (c *SplunkAcsClient) CreateHecToken(hecCreateRequest HttpEventCollectorCreateRequest) (*HttpEventCollectorCreateResponse, *SplunkACSResponse, error) {
 	reqBody, err := json.Marshal(hecCreateRequest)
 	if err != nil {
 		return nil, nil, err
@@ -38,20 +38,20 @@ func (c *SplunkAcsClient) CreateHecToken(hecCreateRequest HttpEventCollectorCrea
 		return nil, nil, err
 	}
 
-	apiRes, err := c.doRequest(NewSplunkApiRequest(httpReq))
+	apiRes, err := c.doRequest(NewSplunkACSRequest(httpReq))
 	if err != nil {
-		return nil, apiRes.HttpResponse, err
+		return nil, apiRes, err
 	}
 
 	if apiRes.StatusCode != http.StatusAccepted {
-		return nil, apiRes.HttpResponse, fmt.Errorf("unexpected response while creating HEC Token. status: %d, body: %s", apiRes.StatusCode, apiRes.Body)
+		return nil, apiRes, fmt.Errorf("unexpected response while creating HEC Token. status: %d, body: %s", apiRes.StatusCode, apiRes.Body)
 	}
 
 	result := HttpEventCollectorCreateResponse{}
 	err = json.Unmarshal(apiRes.Body, &result)
 	if err != nil {
-		return &result, apiRes.HttpResponse, err
+		return &result, apiRes, err
 	}
 
-	return &result, apiRes.HttpResponse, nil
+	return &result, apiRes, nil
 }
