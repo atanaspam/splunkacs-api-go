@@ -31,6 +31,21 @@ type Index struct {
 	TotalRawSizeMb  string `json:"totalRawSizeMB,omitempty"`
 }
 
+type StackStatus struct {
+	Infrastructure      StackStatusInfrastructure `json:"infrastructure,omitempty"`
+	StackStatusMessages StackStatusMessages       `json:"messages,omitempty"`
+}
+
+type StackStatusInfrastructure struct {
+	StackType    string `json:"stackType,omitempty"`
+	StackVersion string `json:"stackVersion,omitempty"`
+	Status       string `json:"status,omitempty"`
+}
+
+type StackStatusMessages struct {
+	RestartRequired bool `json:"restartRequired,omitempty"`
+}
+
 type SplunkACSRequest struct {
 	HttpRequest *http.Request
 	RetryLimit  int
