@@ -28,30 +28,30 @@ type HttpEventCollectorCreateResponseSpec struct {
 }
 
 func (c *SplunkAcsClient) CreateHecToken(hecCreateRequest HttpEventCollectorCreateRequest) (*HttpEventCollectorCreateResponse, *http.Response, error) {
-	rb, err := json.Marshal(hecCreateRequest)
+	reqBody, err := json.Marshal(hecCreateRequest)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	httpReq, err := http.NewRequest(http.MethodPost, fmt.Sprintf("%s/adminconfig/v2/inputs/http-event-collectors", c.Url), strings.NewReader(string(rb)))
+	httpReq, err := http.NewRequest(http.MethodPost, fmt.Sprintf("%s/adminconfig/v2/inputs/http-event-collectors", c.Url), strings.NewReader(string(reqBody)))
 	if err != nil {
 		return nil, nil, err
 	}
 
-	res, err := c.doRequest(NewSplunkApiRequest(httpReq))
+	apiRes, err := c.doRequest(NewSplunkApiRequest(httpReq))
 	if err != nil {
-		return nil, res.HttpResponse, err
+		return nil, apiRes.HttpResponse, err
 	}
 
-	if res.HttpResponse.StatusCode != http.StatusAccepted {
-		return nil, res.HttpResponse, fmt.Errorf("unexpected response while creating HEC Token. status: %d, body: %s", res.HttpResponse.StatusCode, res.Body)
+	if apiRes.StatusCode != http.StatusAccepted {
+		return nil, apiRes.HttpResponse, fmt.Errorf("unexpected response while creating HEC Token. status: %d, body: %s", apiRes.StatusCode, apiRes.Body)
 	}
 
 	result := HttpEventCollectorCreateResponse{}
-	err = json.Unmarshal(res.Body, &result)
+	err = json.Unmarshal(apiRes.Body, &result)
 	if err != nil {
-		return &result, res.HttpResponse, err
+		return &result, apiRes.HttpResponse, err
 	}
 
-	return &result, res.HttpResponse, nil
+	return &result, apiRes.HttpResponse, nil
 }

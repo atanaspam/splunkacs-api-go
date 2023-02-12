@@ -18,21 +18,21 @@ func (c *SplunkAcsClient) DeleteIndex(indexName string) (*IndexDeleteResponse, *
 		return nil, nil, err
 	}
 
-	res, err := c.doRequest(NewSplunkApiRequest(httpReq))
+	apiRes, err := c.doRequest(NewSplunkApiRequest(httpReq))
 	if err != nil {
-		return nil, res.HttpResponse, err
+		return nil, apiRes.HttpResponse, err
 	}
 
-	if res.HttpResponse.StatusCode == http.StatusNotFound {
-		return nil, res.HttpResponse, fmt.Errorf("index not found. body: '%s'", res.Body)
+	if apiRes.StatusCode == http.StatusNotFound {
+		return nil, apiRes.HttpResponse, fmt.Errorf("index not found. body: '%s'", apiRes.Body)
 	}
 
-	if res.HttpResponse.StatusCode != http.StatusAccepted {
-		return nil, res.HttpResponse, fmt.Errorf("unexpected response while deleting index. status: %d, body: %s", res.HttpResponse.StatusCode, res.Body)
+	if apiRes.StatusCode != http.StatusAccepted {
+		return nil, apiRes.HttpResponse, fmt.Errorf("unexpected response while deleting index. status: %d, body: %s", apiRes.StatusCode, apiRes.Body)
 	}
 
 	result := IndexDeleteResponse{}
-	result.Body = string(res.Body)
+	result.Body = string(apiRes.Body)
 
-	return &result, res.HttpResponse, nil
+	return &result, apiRes.HttpResponse, nil
 }

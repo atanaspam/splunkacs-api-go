@@ -17,20 +17,20 @@ func (c *SplunkAcsClient) ListIndexes() (*IndexListResponse, *http.Response, err
 		return nil, nil, err
 	}
 
-	res, err := c.doRequest(NewSplunkApiRequest(httpReq))
+	apiRes, err := c.doRequest(NewSplunkApiRequest(httpReq))
 	if err != nil {
-		return nil, res.HttpResponse, err
+		return nil, apiRes.HttpResponse, err
 	}
 
-	if res.HttpResponse.StatusCode != http.StatusOK {
-		return nil, res.HttpResponse, fmt.Errorf("unexpected response while listing indexes. status: %d, body: %s", res.HttpResponse.StatusCode, res.Body)
+	if apiRes.StatusCode != http.StatusOK {
+		return nil, apiRes.HttpResponse, fmt.Errorf("unexpected response while listing indexes. status: %d, body: %s", apiRes.StatusCode, apiRes.Body)
 	}
 
 	result := IndexListResponse{}
-	err = json.Unmarshal(res.Body, &result)
+	err = json.Unmarshal(apiRes.Body, &result)
 	if err != nil {
-		return nil, res.HttpResponse, err
+		return nil, apiRes.HttpResponse, err
 	}
 
-	return &result, res.HttpResponse, nil
+	return &result, apiRes.HttpResponse, nil
 }

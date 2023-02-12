@@ -46,7 +46,7 @@ func NewSplunkApiRequest(httpRequest *http.Request) *SplunkApiRequest {
 type SplunkApiResponse struct {
 	HttpResponse *http.Response
 	Body         []byte
-	Code         int
+	StatusCode   int
 }
 
 func NewSplunkApiResponse(httpResponse *http.Response) (*SplunkApiResponse, error) {
@@ -61,6 +61,6 @@ func NewSplunkApiResponse(httpResponse *http.Response) (*SplunkApiResponse, erro
 	return &SplunkApiResponse{
 		HttpResponse: httpResponse,
 		Body:         body,
-		Code:         httpResponse.StatusCode,
+		StatusCode:   httpResponse.StatusCode,
 	}, nil
 }

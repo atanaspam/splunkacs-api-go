@@ -18,30 +18,25 @@ func (c *SplunkAcsClient) GetIndex(indexName string) (*IndexGetResponse, *http.R
 		return nil, nil, err
 	}
 
-	// body, res, err := c.doRequest(NewSplunkApiRequest(httpReq))
-	// if err != nil {
-	// 	return nil, res, err
-	// }
-
-	apiResp, err := c.doRequest(NewSplunkApiRequest(httpReq))
+	apiRes, err := c.doRequest(NewSplunkApiRequest(httpReq))
 	if err != nil {
-		return nil, apiResp.HttpResponse, err
+		return nil, apiRes.HttpResponse, err
 	}
 
-	if apiResp.HttpResponse.StatusCode == http.StatusNotFound {
-		return nil, apiResp.HttpResponse, fmt.Errorf("Index not found. body: '%s'", apiResp.Body)
+	if apiRes.StatusCode == http.StatusNotFound {
+		return nil, apiRes.HttpResponse, fmt.Errorf("Index not found. body: '%s'", apiRes.Body)
 	}
 
-	if apiResp.HttpResponse.StatusCode != http.StatusOK {
-		log.Printf("failed to unmarshal response body: %s", string(apiResp.Body))
-		return nil, apiResp.HttpResponse, fmt.Errorf("unexpected response while getting index. status: %d, body: %s", apiResp.HttpResponse.StatusCode, apiResp.Body)
+	if apiRes.StatusCode != http.StatusOK {
+		log.Printf("failed to unmarshal response body: %s", string(apiRes.Body))
+		return nil, apiRes.HttpResponse, fmt.Errorf("unexpected response while getting index. status: %d, body: %s", apiRes.StatusCode, apiRes.Body)
 	}
 
 	result := IndexGetResponse{}
-	err = json.Unmarshal(apiResp.Body, &result)
+	err = json.Unmarshal(apiRes.Body, &result)
 	if err != nil {
-		return nil, apiResp.HttpResponse, err
+		return nil, apiRes.HttpResponse, err
 	}
 
-	return &result, apiResp.HttpResponse, nil
+	return &result, apiRes.HttpResponse, nil
 }
