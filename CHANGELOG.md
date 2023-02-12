@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0](https://github.com/atanaspam/splunkacs-api-go/compare/v1.3.0...v1.4.0) (2023-02-12)
+
+
+### Features
+
+* Update API operations results to include SplunkACSResponse instead of the raw http.Response in preparation for decoupling ([d998195](https://github.com/atanaspam/splunkacs-api-go/commit/d998195b7c9a3b716a230c7a72b87c3322789d92))
+
 ## [1.3.0](https://github.com/atanaspam/splunkacs-api-go/compare/v1.2.0...v1.3.0) (2023-02-12)
 
 
