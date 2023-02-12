@@ -23,15 +23,9 @@ func (c *SplunkAcsClient) GetStackStatus() (*StackStatusResponse, *SplunkACSResp
 		return nil, apiRes, err
 	}
 
-	// fmt.Printf("Status response: %d, %s", apiRes.StatusCode, apiRes.Body)
-
-	if apiRes.StatusCode == http.StatusNotFound {
-		return nil, apiRes, fmt.Errorf("Index not found. body: '%s'", apiRes.Body)
-	}
-
 	if apiRes.StatusCode != http.StatusOK {
-		log.Printf("failed to unmarshal response body: %s", string(apiRes.Body))
-		return nil, apiRes, fmt.Errorf("unexpected response while getting index. status: %d, body: %s", apiRes.StatusCode, apiRes.Body)
+		log.Printf("failed to get stack status: %s", string(apiRes.Body))
+		return nil, apiRes, fmt.Errorf("unexpected response while getting stack status. code: %d, body: %s", apiRes.StatusCode, apiRes.Body)
 	}
 
 	result := StackStatusResponse{}
