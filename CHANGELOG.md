@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.0](https://github.com/atanaspam/splunkacs-api-go/compare/v2.0.0...v2.1.0) (2023-02-12)
+
+
+### Features
+
+* Add ability to get the status of the current stack ([e8dcce2](https://github.com/atanaspam/splunkacs-api-go/commit/e8dcce28e7bb1a576f3673fe440382b5e566a074))
+* add ability to get the status of the current stack ([#8](https://github.com/atanaspam/splunkacs-api-go/issues/8)) ([0361ff0](https://github.com/atanaspam/splunkacs-api-go/commit/0361ff087148bda9158455652d43b8bcb57e3698))
+
 ## [2.0.0](https://github.com/atanaspam/splunkacs-api-go/compare/v1.3.0...v2.0.0) (2023-02-12)
 
 
