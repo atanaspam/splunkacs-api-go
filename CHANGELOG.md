@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0](https://github.com/atanaspam/splunkacs-api-go/compare/v1.2.0...v1.3.0) (2023-02-12)
+
+
+### Features
+
+* add rate limit aware http client logic ([#6](https://github.com/atanaspam/splunkacs-api-go/issues/6)) ([e2b02cb](https://github.com/atanaspam/splunkacs-api-go/commit/e2b02cb096e9c9e610cbd02feca0c20e205fe415))
+* adding http client rate-limiting aware logic to the client using ghetto exponential backoff ([9c1d72b](https://github.com/atanaspam/splunkacs-api-go/commit/9c1d72bcd4e66f722b15e573dc53752698f12fc4))
+* Update client response model to use new SplunkApiResponse type ([5dfd1e3](https://github.com/atanaspam/splunkacs-api-go/commit/5dfd1e33e12df9a63631dd7fd621c15614be9ffa))
+
 ## [1.2.0](https://github.com/atanaspam/splunkacs-api-go/compare/v1.1.2...v1.2.0) (2022-12-02)
 
 
