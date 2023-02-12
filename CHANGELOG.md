@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.0](https://github.com/atanaspam/splunkacs-api-go/compare/v1.5.0...v1.6.0) (2023-02-12)
+
+
+### Features
+
+* Add IP Whitelist Get, Create and Delete ([143b7d9](https://github.com/atanaspam/splunkacs-api-go/commit/143b7d948816ed41d26d0ee5a79ebb19443372f2))
+
+
+### Bug Fixes
+
+* Fix missing examples documentation ([e3f877a](https://github.com/atanaspam/splunkacs-api-go/commit/e3f877a106f3647dcd69b66b91f8298709a846ee))
+
 ## [1.5.0](https://github.com/atanaspam/splunkacs-api-go/compare/v1.4.0...v1.5.0) (2023-02-12)
 
 
