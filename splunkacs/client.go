@@ -32,7 +32,7 @@ func (c *SplunkAcsClient) executeHttpRequest(req *http.Request) (*http.Response,
 	return res, nil
 }
 
-func (c *SplunkAcsClient) doRequest(apiRequest *SplunkApiRequest) (*SplunkApiResponse, error) {
+func (c *SplunkAcsClient) doRequest(apiRequest *SplunkACSRequest) (*SplunkACSResponse, error) {
 
 	token := c.Token
 	apiRequest.HttpRequest.Header.Set("Authorization", "Bearer "+token)
@@ -81,7 +81,7 @@ func (c *SplunkAcsClient) doRequest(apiRequest *SplunkApiRequest) (*SplunkApiRes
 				continue
 			}
 		}
-		return NewSplunkApiResponse(res)
+		return NewSplunkACSResponse(res)
 	}
 	return nil, fmt.Errorf("failed to get a valid response after %d retries", apiRequest.RetryLimit)
 }
