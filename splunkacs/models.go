@@ -1,5 +1,10 @@
 package splunkacs
 
+import (
+	"io"
+	"net/http"
+)
+
 // https://docs.splunk.com/Documentation/SplunkCloud/9.0.2208/Config/ManageHECtokens#View_existing_HEC_tokens
 type HttpEventCollectorToken struct {
 	Spec  HecTokenSpec `json:"spec"`
@@ -24,4 +29,38 @@ type Index struct {
 	MaxDataSizeMb   int    `json:"maxDataSizeMB,omitempty"`
 	TotalEventCount string `json:"totalEventCount,omitempty"`
 	TotalRawSizeMb  string `json:"totalRawSizeMB,omitempty"`
+}
+
+type SplunkApiRequest struct {
+	HttpRequest *http.Request
+	RetryLimit  int
+}
+
+func NewSplunkApiRequest(httpRequest *http.Request) *SplunkApiRequest {
+	return &SplunkApiRequest{
+		HttpRequest: httpRequest,
+		RetryLimit:  4, // Arbitrary magic value
+	}
+}
+
+type SplunkApiResponse struct {
+	HttpResponse *http.Response
+	Body         []byte
+	Code         int
+}
+
+func NewSplunkApiResponse(httpResponse *http.Response) (*SplunkApiResponse, error) {
+	defer httpResponse.Body.Close()
+	body, err := io.ReadAll(httpResponse.Body)
+	if err != nil {
+		return &SplunkApiResponse{
+			HttpResponse: httpResponse,
+		}, nil
+	}
+
+	return &SplunkApiResponse{
+		HttpResponse: httpResponse,
+		Body:         body,
+		Code:         httpResponse.StatusCode,
+	}, nil
 }
